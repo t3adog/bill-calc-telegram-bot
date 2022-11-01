@@ -4,7 +4,7 @@ from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler, Messa
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    level=logging.DEBUG
+    level=logging.INFO
 )
 
 TOKEN = ''
@@ -53,7 +53,6 @@ async def pre_bill(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 def generate_bill_str(chat_id):
     bill = SESSIONS[chat_id]
-    print(bill)
     output = ""
     for row in bill: 
         output = output + row["position"] + " " + str(row["price"]) + "\n"
@@ -85,7 +84,6 @@ async def add(update: Update, context: ContextTypes.DEFAULT_TYPE):
         try:
             validate_row(update.message.text)
         except Exception as e:
-            logging.error(e)
             await context.bot.send_message(chat_id=update.effective_chat.id, text="😞 Некорректный формат. Нужно вот так: \n\n Пиво 200 \n\n или \n\n Пиво 200.50")
             return
         msgs = msg.split()
